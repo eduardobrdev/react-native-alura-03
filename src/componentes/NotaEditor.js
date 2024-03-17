@@ -1,12 +1,13 @@
 import { Picker } from "@react-native-picker/picker"
 import React, { useState } from "react"
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native"
+import { adicionaNota } from "../servicos/Notas"
 //import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export default function NotaEditor() {
+export default function NotaEditor({mostraNotas}) {
 
   const [titulo, setTitulo] = useState("")
-  const [categoria, setCategoria] = useState("")
+  const [categoria, setCategoria] = useState("Pessoal")
   const [texto, setTexto] = useState("")
   const [modalVisivel, setModalVisivel] = useState(false)
 
@@ -24,6 +25,16 @@ export default function NotaEditor() {
   //   const todasChaves = await AsyncStorage.getAllKeys()
   //   return todasChaves.length + 1
   // }
+
+  async function salvaNota() {
+    const umaNota = {
+      titulo: titulo,
+      categoria: categoria,
+      texto: texto
+    }
+    await adicionaNota(umaNota)
+    mostraNotas()
+  }
 
   return(
     <>
@@ -62,7 +73,7 @@ export default function NotaEditor() {
                 placeholder="Digite aqui seu lembrete"
                 value={texto}/>
               <View style={estilos.modalBotoes}>
-                <TouchableOpacity style={estilos.modalBotaoSalvar}>
+                <TouchableOpacity style={estilos.modalBotaoSalvar} onPress={salvaNota}>
                   <Text style={estilos.modalBotaoTexto}>Salvar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={estilos.modalBotaoCancelar} onPress={() => {setModalVisivel(false)}}>
