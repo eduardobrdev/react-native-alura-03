@@ -1,7 +1,7 @@
 import { Picker } from "@react-native-picker/picker"
 import React, { useEffect, useState } from "react"
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native"
-import { adicionaNota, atualizaNota } from "../servicos/Notas"
+import { adicionaNota, apagaNota, atualizaNota } from "../servicos/Notas"
 //import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function NotaEditor({mostraNotas, notaSelecionada, setNotaSelecionada}) {
@@ -45,6 +45,7 @@ export default function NotaEditor({mostraNotas, notaSelecionada, setNotaSelecio
     }
     await adicionaNota(umaNota)
     mostraNotas()
+    limpaNota()
   }
 
   async function atualizarNota() {
@@ -56,7 +57,7 @@ export default function NotaEditor({mostraNotas, notaSelecionada, setNotaSelecio
     }
     await atualizaNota(umaNota)
     mostraNotas()
-    setModalVisivel(false)
+    limpaNota()
   }
 
   function preencheNota() {
@@ -71,6 +72,12 @@ export default function NotaEditor({mostraNotas, notaSelecionada, setNotaSelecio
     setTexto("")
     setNotaSelecionada({})
     setModalVisivel(false)
+  }
+
+  async function removeNota() {
+    await apagaNota(notaSelecionada)
+    mostraNotas()
+    limpaNota()
   }
 
   return(
@@ -115,6 +122,12 @@ export default function NotaEditor({mostraNotas, notaSelecionada, setNotaSelecio
                 }}>
                   <Text style={estilos.modalBotaoTexto}>Salvar</Text>
                 </TouchableOpacity>
+                {
+                  notaParaAtualizar ?
+                  <TouchableOpacity style={estilos.modalBotaoDeletar} onPress={() => {removeNota()}}>
+                    <Text style={estilos.modalBotaoTexto}>Deletar</Text>
+                  </TouchableOpacity> : <></>
+                }
                 <TouchableOpacity style={estilos.modalBotaoCancelar} onPress={() => {limpaNota()}}>
                   <Text style={estilos.modalBotaoTexto}>Cancelar</Text>
                 </TouchableOpacity>

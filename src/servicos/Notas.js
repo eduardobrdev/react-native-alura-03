@@ -40,3 +40,14 @@ export async function atualizaNota(nota) {
     })
   })
 }
+
+export async function apagaNota(nota) {
+  return new Promise((resolve) => {
+    db.transaction((transaction) => {
+      transaction.executeSql("DELETE FROM Notas WHERE id = ?;",
+      [nota.id], () => {
+        resolve("Nota apagada com sucesso.")
+      })
+    })
+  })
+}
