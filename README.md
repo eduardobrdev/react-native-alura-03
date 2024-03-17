@@ -10,3 +10,8 @@ npx expo install --fix
 ````
 npm install @react-native-async-storage/async-storage
 ````
+
+2 - Instalar o SQLite:
+````
+npx expo install expo-sqlite
+````
